@@ -1,6 +1,7 @@
 {% extends 'backend/base.html' %}
 {% load static %}
 {% load widget_tweaks %}
+{% load crispy_forms_tags %}
 
 {% block title %} Create Product {% endblock %}
 
@@ -56,7 +57,34 @@
                 <h6 class="m-0 font-weight-bold text-primary">Media</h6>
               </div>
               <div class="card-body border">
-                <vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"></vue-dropzone>
+                
+                  <div class="table-responsiv">
+                  
+                    <table>
+                      <tr>
+                        <th>Thumbnail*</th>
+                        <th></th>
+                      </tr>
+                        {{ image_formset.management_form|crispy }}
+                        {% for form in image_formset.forms %}
+                                <tr class="{% cycle 'row1' 'row2' %} img_formset_row-{{ image_formset.prefix }}">
+                                    {% for field in form.visible_fields %}
+                                    <td>
+                                        {# Include the hidden fields in the form #}
+                                        {% if forloop.first %}
+                                            {% for hidden in form.hidden_fields %}
+                                                {{ hidden }}
+                                            {% endfor %}
+                                        {% endif %}
+                                        
+                                        {{ field.errors.as_ul }}
+                                        {{ field|as_crispy_field }}
+                                    </td>
+                                    {% endfor %}
+                                </tr>
+                        {% endfor %}
+                    </table>
+                  </div>
               </div>
             </div>
           </div>
@@ -68,14 +96,14 @@
               </div>
               <div class="card-body">
                 <div class="table-responsiv">
-                  {% load crispy_forms_tags %}
+                 
                   <table>
                     <tr>
                       <th>Variant title*</th>
                       <th>Variant*</th>
                       <th>Price*</th>
                       <th>Stock*</th>
-                      <th>Remove</th>
+                      <th></th>
                     </tr>
                       {{ variant_formset.management_form|crispy }}
                       {% for form in variant_formset.forms %}
@@ -114,6 +142,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.formset/1.2.2/jquery.formset.min.js" integrity="sha512-ltwjKsDTo3hW/wV66ZaEkf2wOAFxmg7rWM76J8kOcYKLSKy44WBYO/BFaNNH3NGDS8BSz3meB9wtSnm41oL+pA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </script>
 <script type="text/javascript">
+      $('.img_formset_row-{{ image_formset.prefix }}').formset({
+          addText: 'Add another',
+          deleteText: 'Remove',
+          prefix: '{{ image_formset.prefix }}',
+      });
+
+
     $('.formset_row-{{ variant_formset.prefix }}').formset({
         addText: 'Add another',
         deleteText: 'Remove',

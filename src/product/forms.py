@@ -11,7 +11,7 @@ from django.forms import (
 )
 from django.forms.models import modelformset_factory
 from product.models import (
-    Variant, Product, ProductVariant, ProductVariantPrice
+    Variant, Product, ProductVariant, ProductVariantPrice, ProductImage
 )
 
 
@@ -28,6 +28,7 @@ class VariantForm(ModelForm):
         }
 
 
+
 class ProductVariantForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProductVariantForm, self).__init__(*args, **kwargs)
@@ -38,7 +39,6 @@ class ProductVariantForm(ModelForm):
     class Meta:
         model = ProductVariant
         fields = ['variant_title', 'variant', 'price', 'stock']
-
         labels = {
            'variant_title': '',
            'variant': '',
@@ -48,7 +48,7 @@ class ProductVariantForm(ModelForm):
 
 
 ProductVariantFormFormSet = modelformset_factory(
-    ProductVariant, form=ProductVariantForm, extra=1, can_delete=True,
+    ProductVariant, form=ProductVariantForm, extra=0, can_delete=True,
     min_num=1, max_num=3
 )
 
@@ -111,9 +111,22 @@ class ProductFilterSet(FilterSet):
         price = value
         price_min = float(value.stop)
         price_max = float(value.start)
-        print('-' * 30, 'price ', price_max, price_max, type(price_min))
         product_variants = ProductVariantPrice.objects.filter(
             price__range=[price_max, price_min]
         )
         product_ids = [obj.product.pk for obj in product_variants]
         return queryset.filter(pk__in=product_ids)
+
+
+class ProductImageForm(ModelForm):
+    class Meta:
+        model = ProductImage
+        fields = ('thumbnail', )
+        labels = {
+           'thumbnail': '',
+        }
+
+
+ProductImageFormFormSet = modelformset_factory(
+    ProductImage, form=ProductImageForm, extra=1, can_delete=True, max_num=10
+)

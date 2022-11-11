@@ -29,7 +29,7 @@ class Product(TimeStampMixin):
 
 def photo_upload_path(instance, filename):
     """Custom file 'upload_to' directory returned from formatted string"""
-    return f'products/{instance.pk}/{filename}'
+    return f'products/{filename}'
 
 
 class ProductImage(TimeStampMixin):
