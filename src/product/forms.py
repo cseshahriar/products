@@ -81,7 +81,7 @@ class ProductFilterSet(FilterSet):
         widget=RangeWidget(
             attrs={
                 'type': 'date',
-                'class': 'form-control form-control-sm'
+                'class': 'form-control'
             }
         )
     )
@@ -90,7 +90,7 @@ class ProductFilterSet(FilterSet):
         widget=RangeWidget(
             attrs={
                 'type': 'text',
-                'class': 'form-control form-control-sm'
+                'class': 'form-control'
             }
         ), method="filter_by_price_range"
     )
@@ -111,7 +111,7 @@ class ProductFilterSet(FilterSet):
         price = value
         price_min = float(value.stop)
         price_max = float(value.start)
-        product_variants = ProductVariantPrice.objects.filter(
+        product_variants = ProductVariant.objects.filter(
             price__range=[price_max, price_min]
         )
         product_ids = [obj.product.pk for obj in product_variants]
