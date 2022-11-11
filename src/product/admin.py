@@ -36,7 +36,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
-    list_display = ('id', 'created_at', 'updated_at', 'product', 'file_path')
+    list_display = ('id', 'created_at', 'updated_at', 'product')
     list_filter = ('created_at', 'updated_at', 'product')
     date_hierarchy = 'created_at'
 

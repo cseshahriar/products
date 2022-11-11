@@ -27,9 +27,16 @@ class Product(TimeStampMixin):
         return self.title
 
 
+def photo_upload_path(instance, filename):
+    """Custom file 'upload_to' directory returned from formatted string"""
+    return f'products/{instance.pk}/{filename}'
+
+
 class ProductImage(TimeStampMixin):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    file_path = models.URLField()
+    thumbnail = models.ImageField(
+        upload_to=photo_upload_path, null=True, blank=False
+    )
 
 
 class ProductVariant(TimeStampMixin):
