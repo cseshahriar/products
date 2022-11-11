@@ -22,19 +22,34 @@ class VariantForm(ModelForm):
         widgets = {
             'title': TextInput(attrs={'class': 'form-control'}),
             'description': Textarea(attrs={'class': 'form-control'}),
-            'active': CheckboxInput(attrs={'class': 'form-check-input', 'id': 'active'})
+            'active': CheckboxInput(
+                attrs={'class': 'form-check-input', 'id': 'active'}
+            )
         }
 
 
 class ProductVariantForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProductVariantForm, self).__init__(*args, **kwargs)
+        self.fields['variant'].queryset = Variant.objects.filter(
+            active=True
+        )
+
     class Meta:
         model = ProductVariant
         fields = ['variant_title', 'variant', 'price', 'stock']
-        # product
+
+        labels = {
+           'variant_title': '',
+           'variant': '',
+           'price': '',
+           'stock': '',
+        }
 
 
 ProductVariantFormFormSet = modelformset_factory(
-    ProductVariant, form=ProductVariantForm, extra=1, can_delete=True
+    ProductVariant, form=ProductVariantForm, extra=1, can_delete=True,
+    min_num=1, max_num=3
 )
 
 

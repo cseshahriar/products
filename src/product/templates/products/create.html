@@ -5,7 +5,21 @@
 {% block title %} Create Product {% endblock %}
 
 {% block page_css %}
-
+<style>
+  .error {
+    margin-top: 5px;
+    color: #5a5c69;
+    font-size: 14px !important;
+    position: relative;
+    line-height: 1;
+    width: 12.5rem;
+    color: rgb(236, 109, 35) !important;
+  }
+  .delete-row {
+    font-size: 14px !important;
+    color: rgb(236, 109, 35) !important;
+  }
+</style>
 {% endblock page_css %}
 
 {% block content %}
@@ -53,26 +67,36 @@
                 <h6 class="m-0 font-weight-bold text-primary">Variants</h6>
               </div>
               <div class="card-body">
-              {% load crispy_forms_tags %}
-              <table>
-                  {{ variant_formset.management_form|crispy }}
-                  {% for form in variant_formset.forms %}
-                          <tr class="{% cycle 'row1' 'row2' %} formset_row-{{ variant_formset.prefix }}">
-                              {% for field in form.visible_fields %}
-                              <td>
-                                  {# Include the hidden fields in the form #}
-                                  {% if forloop.first %}
-                                      {% for hidden in form.hidden_fields %}
-                                          {{ hidden }}
-                                      {% endfor %}
-                                  {% endif %}
-                                  {{ field.errors.as_ul }}
-                                  {{ field|as_crispy_field }}
-                              </td>
-                              {% endfor %}
-                          </tr>
-                  {% endfor %}
-              </table>
+                <div class="table-responsiv">
+                  {% load crispy_forms_tags %}
+                  <table>
+                    <tr>
+                      <th>Variant title*</th>
+                      <th>Variant*</th>
+                      <th>Price*</th>
+                      <th>Stock*</th>
+                      <th>Remove</th>
+                    </tr>
+                      {{ variant_formset.management_form|crispy }}
+                      {% for form in variant_formset.forms %}
+                              <tr class="{% cycle 'row1' 'row2' %} formset_row-{{ variant_formset.prefix }}">
+                                  {% for field in form.visible_fields %}
+                                  <td>
+                                      {# Include the hidden fields in the form #}
+                                      {% if forloop.first %}
+                                          {% for hidden in form.hidden_fields %}
+                                              {{ hidden }}
+                                          {% endfor %}
+                                      {% endif %}
+                                      
+                                      {{ field.errors.as_ul }}
+                                      {{ field|as_crispy_field }}
+                                  </td>
+                                  {% endfor %}
+                              </tr>
+                      {% endfor %}
+                  </table>
+                </div>
               </div>
             </div>
           </div>
