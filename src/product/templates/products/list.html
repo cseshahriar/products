@@ -72,7 +72,7 @@
                 {% for object in object_list %}
                 <tr>
                     <td>{% if page_obj %} {{ forloop.counter0|add:page_obj.start_index }} {% else %} {{ forloop.counter }} {% endif %}</td>
-                    <td>{{ object.pk }}{{ object.title }} <br> Created at :  {{ object.created_at|date:'d-M-Y' }}</td>
+                    <td>{{ object.title }} <br> Created at :  {{ object.created_at|date:'d-M-Y' }}</td>
                     <td>{{ object.description }}</td>
                     <td>
                         <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant-{{ object.pk }}">

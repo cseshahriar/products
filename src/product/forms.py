@@ -9,6 +9,7 @@ from django.forms import (
     forms, ModelForm, CharField, TextInput, Textarea, BooleanField,
     CheckboxInput
 )
+from django.forms.models import modelformset_factory
 from product.models import (
     Variant, Product, ProductVariant, ProductVariantPrice
 )
@@ -22,6 +23,31 @@ class VariantForm(ModelForm):
             'title': TextInput(attrs={'class': 'form-control'}),
             'description': Textarea(attrs={'class': 'form-control'}),
             'active': CheckboxInput(attrs={'class': 'form-check-input', 'id': 'active'})
+        }
+
+
+class ProductVariantForm(ModelForm):
+    class Meta:
+        model = ProductVariant
+        fields = ['variant_title', 'variant', 'price', 'stock']
+        # product
+
+
+ProductVariantFormFormSet = modelformset_factory(
+    ProductVariant, form=ProductVariantForm, extra=1, can_delete=True
+)
+
+
+class ProductForm(ModelForm):
+    class Meta:
+        model = Product
+        fields = ['title', 'sku', 'description']
+        widgets = {
+            'title': TextInput(attrs={'class': 'form-control'}),
+            'description': Textarea(attrs={'class': 'form-control'}),
+            'active': CheckboxInput(
+                attrs={'class': 'form-check-input', 'id': 'active'}
+            )
         }
 
 

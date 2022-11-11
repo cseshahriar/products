@@ -10,6 +10,7 @@ django-extensions = "*"
 djangorestframework = "*"
 django-filter = "*"
 django-widget-tweaks = "*"
+django-crispy-forms = "*"
 
 [dev-packages]
 

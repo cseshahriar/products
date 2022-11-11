@@ -8,6 +8,9 @@ class Variant(TimeStampMixin):
     description = models.TextField()
     active = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.title
+
 
 class Product(TimeStampMixin):
     title = models.CharField(max_length=255)
@@ -17,8 +20,11 @@ class Product(TimeStampMixin):
     @property
     def get_product_variants(self):
         """ return product variants """
-        variants = self.productvariantprice_set.all()
+        variants = self.productvariant_set.all()
         return variants
+
+    def __str__(self):
+        return self.title
 
 
 class ProductImage(TimeStampMixin):
@@ -30,6 +36,8 @@ class ProductVariant(TimeStampMixin):
     variant_title = models.CharField(max_length=255)
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    price = models.FloatField(default=0.00)
+    stock = models.IntegerField(default=1)
 
 
 class ProductVariantPrice(TimeStampMixin):
