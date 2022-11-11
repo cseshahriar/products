@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'authentication',
-    'product'
+    'product',
+
+    # third party libraries
+    'django_filters',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

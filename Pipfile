@@ -8,6 +8,8 @@ django = "*"
 django-dotenv = "*"
 django-extensions = "*"
 djangorestframework = "*"
+django-filter = "*"
+django-widget-tweaks = "*"
 
 [dev-packages]
 

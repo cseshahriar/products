@@ -1,25 +1,40 @@
 {% extends 'backend/base.html' %}
-
 {% block title %} Product List {% endblock %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block page_css %}
+<style>
+     #id_created_at_0, #id_created_at_1 {
+        display: inline-block;
+        width: 45%;
+    }
+    #id_created_at_0 {
+        float: left;
+        margin-right: 8px;
+    }
+    #id_created_at_1 {
+        float: right;
+    }
+</style>
+{% endblock page_css%}
 
 {% block content %}
-
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Products</h1>
 </div>
 
 
 <div class="card">
-    <form action="" method="get" class="card-header">
+    <form action="" method="GET" class="card-header">
         <div class="form-row justify-content-between">
             <div class="col-md-2">
-                <input type="text" name="title" placeholder="Product Title" class="form-control">
+                {% render_field filter_form.q class+="form-control" placeholder="Product Title"  %}
             </div>
+            
             <div class="col-md-2">
-                <select name="variant" id="" class="form-control">
-                    <option selected disabled>--Select A Variant--</option>
-
-                </select>
+                {% render_field filter_form.variant class+="form-control"  %}
             </div>
 
             <div class="col-md-3">
@@ -27,14 +42,13 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">Price Range</span>
                     </div>
-                    <input type="text" name="price_from" aria-label="First name" placeholder="From"
-                           class="form-control">
-                    <input type="text" name="price_to" aria-label="Last name" placeholder="To" class="form-control">
+                    {% render_field filter_form.price class+="form-control" %}
                 </div>
             </div>
             <div class="col-md-2">
-                <input type="date" name="date" placeholder="Date" class="form-control">
+                {% render_field filter_form.created_at class+="form-control" %}
             </div>
+
             <div class="col-md-1">
                 <button type="submit" class="btn btn-primary float-right"><i class="fa fa-search"></i></button>
             </div>
@@ -55,51 +69,27 @@
                 </thead>
 
                 <tbody>
+                {% for object in object_list %}
                 <tr>
-                    <td>1</td>
-                    <td>T-Shirt <br> Created at : 25-Aug-2020</td>
-                    <td>Quality product in low cost</td>
+                    <td>{% if page_obj %} {{ forloop.counter0|add:page_obj.start_index }} {% else %} {{ forloop.counter }} {% endif %}</td>
+                    <td>{{ object.pk }}{{ object.title }} <br> Created at :  {{ object.created_at|date:'d-M-Y' }}</td>
+                    <td>{{ object.description }}</td>
                     <td>
-                        <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant">
+                        <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant-{{ object.pk }}">
+                                {% for variant in  object.get_product_variants %}
                                 <dt class="col-sm-3 pb-0">
                                     XL/ Black/ Full
                                 </dt>
                                 <dd class="col-sm-9">
                                     <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
+                                        <dd class="col-sm-4 pb-0">Price : {{ variant.price}}</dd>
+                                        <dd class="col-sm-8 pb-0">InStock : {{ variant.stock }}</dd>
                                     </dl>
                                 </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    XL/ Black/ Half
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    L/ Black/ Full
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    L/ Black/ Half
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
-                            </dl>
-                        <button onclick="$('#variant').toggleClass('h-auto')" class="btn btn-sm btn-link">Show more
-                        </button>
+                                {% endfor %}
+                        </dl>
+                        <button onclick="$('#variant-{{ object.pk }}').toggleClass('h-auto')" class="btn btn-sm btn-link">Show more</button>
+
                     </td>
                     <td>
                         <div class="btn-group btn-group-sm">
@@ -107,6 +97,7 @@
                         </div>
                     </td>
                 </tr>
+                {% endfor %}
                 </tbody>
 
             </table>
@@ -116,12 +107,8 @@
 
     <div class="card-footer">
         <div class="row justify-content-between">
-            <div class="col-md-6">
-                <p>Showing 1 to 10 out of 100</p>
-            </div>
-            <div class="col-md-2">
-
-            </div>
+            <!-- pagination -->
+            {% include 'backend/particals/pagination.html' %}
         </div>
     </div>
 </div>
