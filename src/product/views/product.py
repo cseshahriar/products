@@ -1,14 +1,14 @@
-from django.utils import timezone
+from django.utils import timezone  # noqa
 from django.views import generic
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy  # noqa
 from django.contrib.auth.mixins import (
     UserPassesTestMixin, LoginRequiredMixin, PermissionRequiredMixin
 )
-from django.db import IntegrityError, transaction
-from product.models import Variant, Product, ProductVariant, ProductImage
-from product.forms import (
+from django.db import IntegrityError, transaction  # noqa
+from product.models import Variant, Product, ProductVariant, ProductImage  # noqa
+from product.forms import (  # noqa
     ProductFilterSet, ProductForm, VariantForm, ProductVariantForm,
     ProductVariantFormFormSet, ProductImageFormFormSet
 )

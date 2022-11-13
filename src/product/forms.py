@@ -1,16 +1,16 @@
-from django.db.models import Q
+from django.db.models import Q  # noqa
 from django_filters import (  # noqa
     FilterSet, OrderingFilter, CharFilter, filters,
     ModelChoiceFilter, ChoiceFilter, DateFilter, DateRangeFilter,  # noqa
     DateFromToRangeFilter, RangeFilter
 )
 from django_filters.widgets import RangeWidget
-from django.forms import (
-    forms, ModelForm, CharField, TextInput, Textarea, BooleanField,
-    CheckboxInput
+from django.forms import (  # noqa
+    forms, ModelForm, CharField, TextInput, Textarea, BooleanField,  # noqa
+    CheckboxInput  # noqa
 )
 from django.forms.models import modelformset_factory
-from product.models import (
+from product.models import (  # noqa
     Variant, Product, ProductVariant, ProductVariantPrice, ProductImage
 )
 
@@ -26,7 +26,6 @@ class VariantForm(ModelForm):
                 attrs={'class': 'form-check-input', 'id': 'active'}
             )
         }
-
 
 
 class ProductVariantForm(ModelForm):
@@ -108,7 +107,6 @@ class ProductFilterSet(FilterSet):
         return queryset.filter(pk__in=product_ids)
 
     def filter_by_price_range(self, queryset, name, value):
-        price = value
         price_min = float(value.stop)
         price_max = float(value.start)
         product_variants = ProductVariant.objects.filter(

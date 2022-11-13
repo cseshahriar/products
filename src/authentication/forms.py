@@ -9,8 +9,14 @@ class LoginForm(AuthenticationForm):
         super(LoginForm, self).__init__(*args, **kwargs)
 
     username = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control form-control-user', 'placeholder': 'Enter your username'}
+        attrs={
+            'class': 'form-control form-control-user',
+            'placeholder': 'Enter your username'
+        }
     ))
     password = forms.CharField(widget=forms.PasswordInput(
-        attrs={'class': 'form-control form-control-user', 'placeholder': 'Enter your password'}
+        attrs={
+            'class': 'form-control form-control-user',
+            'placeholder': 'Enter your password'
+        }
     ))
