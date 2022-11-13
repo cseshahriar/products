@@ -49,7 +49,7 @@ class ProductVariantForm(ModelForm):
 
 ProductVariantFormFormSet = modelformset_factory(
     ProductVariant, form=ProductVariantForm, extra=0, can_delete=True,
-    min_num=1, max_num=3
+    min_num=1, max_num=20
 )
 
 
